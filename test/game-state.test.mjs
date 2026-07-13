@@ -2,61 +2,45 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGameState, transition } from '../game-state.mjs';
 
-test('the shortened conversation only asks for replies at its check-in and smile moments', () => {
-  let state = createGameState(0);
-
-  state = transition(state, 'car-arrived');
-  state = transition(state, 'tap-car');
-
-  assert.equal(state.phase, 'conversation');
-  assert.equal(state.driverPose, 'standing');
-  assert.equal(state.dialogMode, 'answer');
-  assert.equal(state.dialog, 'วันนี้หนักมาใช่ไหม');
-
-  assert.equal(transition(state, 'submit-answer', '').phase, 'conversation');
-
-  state = transition(state, 'submit-answer', 'เหนื่อยมาทั้งวัน');
-  assert.equal(state.phase, 'conversation');
-  assert.equal(state.dialog, 'ขอบคุณที่แวะมาคุยกันนะ');
-  assert.equal(state.dialogMode, 'message');
-  assert.equal(transition(state, 'submit-answer', 'ข้ามไม่ได้').dialog, 'ขอบคุณที่แวะมาคุยกันนะ');
-
-  state = transition(state, 'advance-conversation');
-  assert.equal(state.dialog, 'ถ้ายังไม่ไหวก็ไม่เป็นไร ลองหายใจลึก ๆ ก่อน');
-  state = transition(state, 'advance-conversation');
-  assert.equal(state.dialog, 'ถ้าไหว ลองยิ้มมุมปากนิดเดียวก็พอ ไม่ต้องฝืน');
-  assert.equal(state.dialogMode, 'answer');
-  assert.equal(state.driverPose, 'looking-at-sign');
-  state = transition(state, 'submit-answer', 'ลองแล้ว');
-  assert.equal(state.dialog, 'แค่นั้นก็เก่งมากแล้ว');
-  state = transition(state, 'advance-conversation');
-
-  assert.equal(state.phase, 'farewell');
-  assert.equal(state.dialog, 'ยิ้มของคุณน่ารักจะตายไป');
-  assert.equal(state.activeTarget, null);
-  assert.equal(state.dialogMode, 'message');
-  assert.equal(state.palette, 'cool');
-});
-
-test('an unrelated tap cannot skip the calming path', () => {
-  const state = transition(createGameState(), 'tap-sign');
-  assert.equal(state.phase, 'arriving');
-});
-
-test('the car departs only after the final conversation line finishes', () => {
+test('the getting-to-know-you dialogue only asks for answers at its questions', () => {
   let state = createGameState();
   state = transition(state, 'car-arrived');
   state = transition(state, 'tap-car');
-  state = transition(state, 'submit-answer', 'ตอบแล้ว');
-  state = transition(state, 'advance-conversation');
-  state = transition(state, 'advance-conversation');
-  state = transition(state, 'submit-answer', 'ตอบแล้ว');
-  state = transition(state, 'advance-conversation');
 
-  state = transition(state, 'begin-departure');
-  assert.equal(state.phase, 'departing');
-  assert.equal(state.driverPose, 'in-car');
+  assert.equal(state.dialog, 'ขอเดาอะไรเล่น ๆ ได้ไหม');
+  assert.equal(state.requiresReply, false);
 
-  state = transition(state, 'departure-finished');
+  state = transition(state, 'advance-conversation');
+  assert.equal(state.dialog, 'คุณเกิดราศีอะไร');
+  assert.equal(state.answerKey, 'zodiac');
+  assert.equal(state.requiresReply, true);
+
+  state = transition(state, 'submit-answer', 'ถามทำไม');
+  assert.equal(state.answers.zodiac, 'ถามทำไม');
+  assert.equal(state.dialog, 'ก็อยากรู้จักคุณเพิ่มอีกนิดไง แถมจะได้มีข้ออ้างชมว่า “มิน่าล่ะ... น่ารักจัง”');
+  assert.equal(state.requiresReply, false);
+});
+
+test('the dialogue accepts the no-answer branches and closes after the smile question', () => {
+  let state = createGameState();
+  state = transition(state, 'car-arrived');
+  state = transition(state, 'tap-car');
+  state = transition(state, 'advance-conversation');
+  state = transition(state, 'submit-answer', 'ไม่บอก');
+  assert.match(state.dialog, /ไม่ว่าจะราศีอะไร/);
+
+  while (state.phase === 'conversation') {
+    state = state.requiresReply
+      ? transition(state, 'submit-answer', 'ไม่บอก')
+      : transition(state, 'advance-conversation');
+  }
+
+  assert.equal(state.phase, 'farewell');
+  assert.equal(state.dialog, 'ยิ้มของคุณน่ารักจะตายไป');
+  assert.equal(state.answers.smile, 'ไม่บอก');
+});
+
+test('an unrelated tap cannot skip the dialogue', () => {
+  const state = transition(createGameState(), 'tap-sign');
   assert.equal(state.phase, 'arriving');
 });

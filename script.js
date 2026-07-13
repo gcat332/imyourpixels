@@ -3,6 +3,8 @@ import { renderScene } from './components/scene-renderer.mjs';
 import { renderDriver } from './components/driver-renderer.mjs';
 import { renderTargets } from './components/target-renderer.mjs';
 import { SoundEngine } from './components/sound-engine.mjs';
+import { clearAnswers, loadAnswers, saveAnswers } from './components/answer-storage.mjs';
+import { uploadAnswers } from './components/answer-uploader.mjs';
 
 const elements = {
   scene: document.querySelector('#scene'),
@@ -13,11 +15,12 @@ const elements = {
   dialogCopy: document.querySelector('#dialog-copy'),
   answerForm: document.querySelector('#answer-form'),
   answerInput: document.querySelector('#answer-input'),
+  clearAnswers: document.querySelector('#clear-answers'),
   soundToggle: document.querySelector('#sound-toggle'),
   liveRegion: document.querySelector('#live-region'),
 };
 
-let state = createGameState();
+let state = createGameState(loadAnswers(window.localStorage));
 let reducedMotionTimer;
 let dialogTimer;
 const sound = new SoundEngine();
@@ -46,7 +49,10 @@ function render() {
 function dispatch(event, response) {
   const next = transition(state, event, response);
   if (next === state) return;
+  const shouldUpload = next.phase === 'farewell' && state.phase !== 'farewell';
   state = next;
+  if (event === 'submit-answer') saveAnswers(window.localStorage, state.answers);
+  if (shouldUpload) void uploadAnswers(state.answers).catch(() => announce('บันทึกคำตอบไม่สำเร็จ ลองใหม่อีกครั้งภายหลัง'));
   render();
 }
 
@@ -79,6 +85,12 @@ elements.answerForm.addEventListener('submit', (event) => {
   playAndDispatch('submit-answer', response);
 });
 elements.answerInput.addEventListener('input', () => elements.answerInput.setCustomValidity(''));
+elements.clearAnswers.addEventListener('click', () => {
+  clearAnswers(window.localStorage);
+  state = { ...state, answers: {} };
+  render();
+  announce('ล้างคำตอบที่บันทึกไว้แล้ว');
+});
 elements.soundToggle.addEventListener('click', () => {
   sound.muted = !sound.muted;
   elements.soundToggle.setAttribute('aria-pressed', String(!sound.muted));

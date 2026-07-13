@@ -8,7 +8,7 @@ test('scene targets follow their art instead of drawing rectangular overlays', a
   assert.match(css, /\.target-car\s*\{[^}]*clip-path:/);
   assert.doesNotMatch(css, /\.target:not\(:disabled\)::after/);
   assert.match(css, /\.car-sprite\s*\{[^}]*bottom:12%/);
-  assert.match(css, /\.driver\s*\{[^}]*bottom:17%/);
+  assert.match(css, /\.driver\s*\{[^}]*bottom:14%/);
 });
 
 test('the in-scene pixel dialogue supports typed replies and an isolated sprite frame', async () => {
@@ -30,5 +30,6 @@ test('the in-scene pixel dialogue supports typed replies and an isolated sprite 
   assert.doesNotMatch(css, /\.drink-sprite/);
   assert.match(css, /\.dialog-message::after\s*\{/);
   assert.match(css, /\.dialog-answer\[hidden\]\s*\{\s*display:none;/);
+  assert.match(css, /\.dialog-message\s*\{[^}]*top:3%[^}]*width:94%[^}]*min-height:26%/);
   assert.doesNotMatch(css, /driver-walk-right|driver-return-left/);
 });

@@ -14,7 +14,7 @@ button { font:inherit; }
 .car-sprite { z-index:5; left:2.5%; bottom:12%; width:48%; height:34%; object-fit:cover; object-position:center; transform:scaleX(-1); filter:drop-shadow(0 9px 0 rgba(32,29,49,.35)); animation:car-arrival 1.9s steps(8,end) both; }
 .scene[data-phase='departing'] .car-sprite { animation:car-departure 1.8s steps(8,end) both; }
 
-.driver { z-index:7; bottom:17%; left:39%; width:10%; height:32%; background-image:url('assets/sprites/driver-harajuku.png'); background-repeat:no-repeat; background-size:400% 100%; background-position:0 center; opacity:0; filter:drop-shadow(0 6px 0 rgba(32,29,49,.38)); }
+.driver { z-index:7; bottom:14%; left:39%; width:10%; height:32%; background-image:url('assets/sprites/driver-harajuku.png'); background-repeat:no-repeat; background-size:400% 100%; background-position:0 center; opacity:0; filter:drop-shadow(0 6px 0 rgba(32,29,49,.38)); }
 .driver[data-pose='standing'] { left:39%; background-position:0 center; opacity:1; }
 .driver[data-pose='looking-at-sign'] { left:41%; background-position:100% center; opacity:1; }
 
@@ -26,7 +26,7 @@ button { font:inherit; }
 .cue,.dialog-message { position:absolute; z-index:20; margin:0; color:var(--cream); font:clamp(12px,1.45vw,19px)/1.45 system-ui,sans-serif; letter-spacing:.02em; text-shadow:3px 3px 0 var(--ink); }
 .cue { max-width:28%; }.cue::before { color:#ffde70; content:'✦ '; }
 .scene[data-phase='parked'] .cue { left:12%; bottom:50%; }
-.dialog-message { z-index:22; left:8%; bottom:7%; width:84%; min-height:14%; padding:clamp(12px,1.5vw,18px) clamp(36px,4vw,58px) clamp(12px,1.5vw,18px) clamp(16px,2.4vw,30px); border:4px solid var(--cream); outline:4px solid var(--ink); outline-offset:-8px; background:#302d52; box-shadow:8px 8px 0 rgba(32,29,49,.72); color:#fff9e7; font-weight:700; text-shadow:2px 2px 0 #4b265d; animation:dialog-message-in .35s steps(4,end) both; }
+.dialog-message { z-index:22; top:3%; bottom:auto; left:3%; width:94%; min-height:26%; padding:clamp(16px,2.5vw,32px) clamp(42px,5vw,72px) clamp(16px,2.5vw,32px) clamp(20px,3vw,40px); border:4px solid var(--cream); outline:4px solid var(--ink); outline-offset:-8px; background:#302d52; box-shadow:8px 8px 0 rgba(32,29,49,.72); color:#fff9e7; font-weight:700; text-shadow:2px 2px 0 #4b265d; animation:dialog-message-in .35s steps(4,end) both; }
 .dialog-message::after { position:absolute; right:16px; bottom:13px; content:'▶'; color:#ffde70; font-size:.75em; text-shadow:2px 2px 0 var(--ink); animation:dialog-prompt .8s steps(2,end) infinite; }
 .dialog-message[data-mode='answer']::after { display:none; }
 .dialog-copy { margin:0 0 12px; }
@@ -37,7 +37,9 @@ button { font:inherit; }
 .dialog-answer-input:focus-visible,.dialog-submit:focus-visible { outline:3px solid #ffde70; outline-offset:2px; }
 .dialog-submit { flex:0 0 auto; padding:8px 12px; border:3px solid var(--ink); background:#8ee0b4; box-shadow:3px 3px 0 var(--ink); color:var(--ink); font-weight:700; cursor:pointer; }
 .dialog-submit:hover { background:#ffde70; }
-.sound-toggle { position:absolute; z-index:21; top:3%; right:3%; padding:6px 8px; border:0; background:var(--cream); box-shadow:3px 3px 0 var(--ink); color:var(--ink); font:9px/1 monospace; cursor:pointer; }
+.dialog-clear { padding:8px 10px; border:3px solid var(--ink); background:#d9c4ff; box-shadow:3px 3px 0 var(--ink); color:var(--ink); font-weight:700; cursor:pointer; }
+.privacy-note { margin:0; color:#d9c4ff; font-size:.75em; font-weight:400; text-shadow:none; }
+.sound-toggle { position:absolute; z-index:23; top:5%; right:4%; padding:6px 8px; border:0; background:var(--cream); box-shadow:3px 3px 0 var(--ink); color:var(--ink); font:9px/1 monospace; cursor:pointer; }
 .sound-toggle:focus-visible { outline:3px solid #ffde70; outline-offset:3px; }
 
 @keyframes car-arrival { from { transform:translateX(-145%) scaleX(-1); } to { transform:translateX(0) scaleX(-1); } }
@@ -45,5 +47,5 @@ button { font:inherit; }
 @keyframes dialog-prompt { 50% { opacity:.25; } }
 @keyframes dialog-message-in { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
 
-@media (max-width:680px) { body { align-items:start; } .scene { width:100vw; min-height:0; margin-top:max(0px,calc((100vh - 56.25vw)/2)); } .cue { max-width:42%; font-size:11px; } .scene[data-phase='parked'] .cue { left:9%; bottom:49%; } .dialog-message { left:5%; bottom:5%; width:90%; min-height:18%; padding:11px 30px 11px 14px; border-width:3px; outline-width:3px; outline-offset:-6px; font-size:11px; } .answer-entry { gap:5px; } .dialog-answer-input,.dialog-submit { padding:7px; } }
+@media (max-width:680px) { body { align-items:start; } .scene { width:100vw; min-height:0; margin-top:max(0px,calc((100vh - 56.25vw)/2)); } .cue { max-width:42%; font-size:11px; } .scene[data-phase='parked'] .cue { left:9%; bottom:49%; } .dialog-message { top:2%; bottom:auto; left:3%; width:94%; min-height:31%; padding:12px 18px; border-width:3px; outline-width:3px; outline-offset:-6px; font-size:11px; } .answer-entry { gap:5px; flex-wrap:wrap; } .dialog-answer-input { flex-basis:100%; } .dialog-answer-input,.dialog-submit,.dialog-clear { padding:7px; } }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; } }

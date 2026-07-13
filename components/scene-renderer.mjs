@@ -7,5 +7,6 @@ export function renderScene(state, elements) {
   elements.dialogBox.dataset.mode = state.dialogMode;
   elements.dialogCopy.textContent = state.dialog;
   elements.answerForm.hidden = !state.requiresReply;
-  if (state.requiresReply) elements.answerInput.value = '';
+  elements.answerInput.placeholder = state.placeholder || 'พิมพ์ตอบกลับ';
+  if (state.requiresReply) elements.answerInput.value = state.answers[state.answerKey] ?? '';
 }
