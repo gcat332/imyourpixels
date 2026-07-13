@@ -12,6 +12,7 @@ test('the game page contains one in-scene car interaction and a typed dialogue',
   assert.doesNotMatch(html, /data-answer=|id="answer-options"/);
   assert.doesNotMatch(html, /id="vending-button"|id="sign-button"/);
   assert.doesNotMatch(html, /mini-game|result-card|control-card|<footer/);
+  assert.doesNotMatch(html, /คำตอบจะถูกบันทึกไว้/);
 });
 
 test('scene assets are relative and no external UI shell remains', async () => {

@@ -6,56 +6,56 @@ function responseFor(key, answers) {
   const answer = answers[key] ?? '';
 
   if (key === 'zodiac') {
-    if (includes(answer, 'ไม่บอก')) return 'งั้นเราขอเดาแทนก็ได้\nไม่ว่าจะราศีอะไร... ก็น่ารักอยู่ดี';
-    if (includes(answer, 'ถามทำไม')) return 'ก็อยากรู้จักคุณเพิ่มอีกนิดไง แถมจะได้มีข้ออ้างชมว่า “มิน่าล่ะ... น่ารักจัง”';
-    return 'มิน่าล่ะ... ถึงได้น่ารักแบบนี้';
+    if (includes(answer, 'ไม่บอก')) return 'โห เก็บเป็นความลับเหรอ\nงั้นขอเดาเองละกัน จะราศีไหนก็น่ารักอยู่ดี';
+    if (includes(answer, 'ถามทำไม')) return 'ก็อยากรู้จักเธอเพิ่มอีกนิดไง';
+    return 'อ๋อ มิน่าล่ะ... น่ารักแบบนี้นี่เอง';
   }
 
   if (key === 'birthday') {
-    if (includes(answer, 'ไม่บอก')) return 'ได้เลย ไว้วันที่คุณพร้อมค่อยบอกก็ได้ เราไม่รีบ';
-    if (includes(answer, 'ถามทำไม')) return 'ก็อยากมีวันสำคัญไว้ยิ้มไปพร้อมกับคุณบ้าง';
-    return 'จำไว้แล้วนะ ถึงวันนั้นเราจะเป็นคนแรก ๆ ที่อวยพรเลย';
+    if (includes(answer, 'ไม่บอก')) return 'ได้เลย ไว้พร้อมเมื่อไหร่ค่อยบอกก็ได้';
+    if (includes(answer, 'ถามทำไม')) return 'ก็อยากมีวันสำคัญไว้ยิ้มไปพร้อมกับเธอบ้าง';
+    return 'โอเค จำไว้ละ';
   }
 
   if (key === 'color') return includes(answer, 'ไม่บอก')
-    ? 'งั้นเอาเป็นว่าสีที่ทำให้คุณยิ้มได้ เราก็ชอบเหมือนกัน'
-    : 'สีนั้นคงเหมาะกับคุณน่าดู... แต่เราว่ารอยยิ้มคุณสดใสกว่าอีกนะ';
+    ? 'งั้นเอาเป็นว่าสีที่ทำให้เธอยิ้มได้ เราก็ชอบเหมือนกัน'
+    : 'สีนั้นน่าจะเหมาะกับเธอนะ แต่เราว่ารอยยิ้มเธอสดใสกว่าอีก';
 
   if (key === 'dessert') {
-    if (includes(answer, 'เค้ก') || includes(answer, 'cake')) return 'น่าจะเป็นสายอบอุ่นนะ';
+    if (includes(answer, 'เค้ก') || includes(answer, 'cake')) return 'สายอบอุ่นนี่เอง';
     if (includes(answer, 'ไอศกรีม') || includes(answer, 'ice')) return 'สดใสเหมือนที่คิดเลย';
     return 'งั้นเลือกยิ้มให้เราก็พอ';
   }
 
   if (key === 'drink') return includes(answer, 'ไม่บอก')
-    ? 'ไม่เป็นไร ไว้ค่อยเล่าให้ฟังวันหลังก็ได้'
-    : 'ไว้สักวันเราจะจำไว้ เผื่อมีโอกาสจะได้เลือกถูก';
+    ? 'ไม่เป็นไร ไว้ค่อยเล่าก็ได้'
+    : 'โอเค จำไว้ เผื่อวันไหนได้เลือกให้จะได้ไม่พลาด';
 
   if (key === 'hobby') return includes(answer, 'ไม่บอก')
-    ? 'งั้นวันหลังค่อยเล่าให้เราฟังก็ได้ เราชอบฟังเรื่องของคุณ'
-    : 'ฟังแล้วนึกภาพออกเลย น่าสนุกดีนะ';
+    ? 'ไว้วันหลังค่อยเล่าก็ได้ เราชอบฟังเรื่องเธอ'
+    : 'ฟังแล้วน่าสนุกอะ';
 
-  return 'ยิ้มของคุณน่ารักจะตายไป';
+  return 'ยิ้มของเธอน่ารักจะตายไป';
 }
 
 const conversation = [
-  { text: 'ขอเดาอะไรเล่น ๆ ได้ไหม', pose: 'standing' },
-  { text: 'คุณเกิดราศีอะไร', pose: 'standing', key: 'zodiac', placeholder: 'บอกราศี หรือพิมพ์ ไม่บอก / ถามทำไม' },
+  { text: 'มาเล่นเกมรู้จักกันเพิ่มอีกนิดปะ', pose: 'standing' },
+  { text: 'เริ่มจากราศีก่อน เธอเกิดราศีอะไรอะ', pose: 'standing', key: 'zodiac', placeholder: 'บอกราศี หรือพิมพ์ ไม่บอก / ถามทำไม' },
   { text: (answers) => responseFor('zodiac', answers), pose: 'standing' },
-  { text: 'ถามอีกข้อได้ไหม', pose: 'standing' },
-  { text: 'วันเกิดคุณวันไหนเหรอ', pose: 'standing', key: 'birthday', placeholder: 'พิมพ์วันเกิด หรือ ไม่บอก / ถามทำไม' },
+  { text: 'ขอถามต่ออีกข้อได้ปะ', pose: 'standing' },
+  { text: 'วันเกิดเธอวันไหนอะ', pose: 'standing', key: 'birthday', placeholder: 'พิมพ์วันเกิด หรือ ไม่บอก / ถามทำไม' },
   { text: (answers) => responseFor('birthday', answers), pose: 'standing' },
-  { text: 'ขอถามอะไรสนุก ๆ หน่อย', pose: 'standing' },
-  { text: 'คุณชอบสีอะไรที่สุด', pose: 'standing', key: 'color', placeholder: 'พิมพ์สีที่ชอบ หรือ ไม่บอก' },
+  { text: 'ขอถามอะไรชิล ๆ หน่อย', pose: 'standing' },
+  { text: 'เธอชอบสีอะไรสุด', pose: 'standing', key: 'color', placeholder: 'พิมพ์สีที่ชอบ หรือ ไม่บอก' },
   { text: (answers) => responseFor('color', answers), pose: 'standing' },
-  { text: 'เลือกได้อย่างเดียว', pose: 'standing' },
-  { text: 'เค้ก หรือ ไอศกรีม', pose: 'standing', key: 'dessert', placeholder: 'พิมพ์ เค้ก หรือ ไอศกรีม' },
+  { text: 'คำถามนี้ต้องเลือกแล้วนะ', pose: 'standing' },
+  { text: 'ทีมเค้ก หรือ ทีมไอศกรีม', pose: 'standing', key: 'dessert', placeholder: 'พิมพ์ เค้ก หรือ ไอศกรีม' },
   { text: (answers) => responseFor('dessert', answers), pose: 'standing' },
-  { text: 'เวลาเหนื่อย ๆ คุณชอบดื่มอะไร', pose: 'standing', key: 'drink', placeholder: 'พิมพ์เครื่องดื่มที่ชอบ หรือ ไม่บอก' },
+  { text: 'เหนื่อย ๆ เธอชอบดื่มอะไร', pose: 'standing', key: 'drink', placeholder: 'พิมพ์เครื่องดื่มที่ชอบ หรือ ไม่บอก' },
   { text: (answers) => responseFor('drink', answers), pose: 'standing' },
-  { text: 'เวลาว่าง คุณชอบทำอะไรมากที่สุด', pose: 'standing', key: 'hobby', placeholder: 'พิมพ์งานอดิเรก หรือ ไม่บอก' },
+  { text: 'เวลาว่างเธอชอบทำอะไรสุด', pose: 'standing', key: 'hobby', placeholder: 'พิมพ์งานอดิเรก หรือ ไม่บอก' },
   { text: (answers) => responseFor('hobby', answers), pose: 'standing' },
-  { text: 'ยิ้มเยอะ ๆ แล้วหรือยัง', pose: 'looking-at-sign', key: 'smile', placeholder: 'พิมพ์ตอบกลับ' },
+  { text: 'วันนี้ยิ้มเยอะ ๆ ยัง', pose: 'looking-at-sign', key: 'smile', placeholder: 'พิมพ์ตอบกลับ' },
   { text: (answers) => responseFor('smile', answers), pose: 'looking-at-sign' },
 ];
 

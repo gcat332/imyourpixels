@@ -38,7 +38,6 @@ button { font:inherit; }
 .dialog-submit { flex:0 0 auto; padding:8px 12px; border:3px solid var(--ink); background:#8ee0b4; box-shadow:3px 3px 0 var(--ink); color:var(--ink); font-weight:700; cursor:pointer; }
 .dialog-submit:hover { background:#ffde70; }
 .dialog-clear { padding:8px 10px; border:3px solid var(--ink); background:#d9c4ff; box-shadow:3px 3px 0 var(--ink); color:var(--ink); font-weight:700; cursor:pointer; }
-.privacy-note { margin:0; color:#d9c4ff; font-size:.75em; font-weight:400; text-shadow:none; }
 .sound-toggle { position:absolute; z-index:23; top:5%; right:4%; padding:6px 8px; border:0; background:var(--cream); box-shadow:3px 3px 0 var(--ink); color:var(--ink); font:9px/1 monospace; cursor:pointer; }
 .sound-toggle:focus-visible { outline:3px solid #ffde70; outline-offset:3px; }
 
