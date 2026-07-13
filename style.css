@@ -8,22 +8,20 @@ button { font:inherit; }
 .scene { position:relative; isolation:isolate; width:min(100vw,1280px); aspect-ratio:16 / 9; overflow:hidden; background:#5f4469; image-rendering:pixelated; }
 .scene::after { position:absolute; z-index:3; inset:0; pointer-events:none; content:''; background:rgba(77,169,222,.32); opacity:0; transition:opacity .7s steps(5,end); }
 .scene[data-palette='cool']::after { opacity:1; }
-.scene-background,.car-sprite,.driver,.drink-sprite { position:absolute; display:block; image-rendering:pixelated; }
+.scene-background,.car-sprite,.driver { position:absolute; display:block; image-rendering:pixelated; }
 .scene-background { z-index:1; inset:0; width:100%; height:100%; object-fit:cover; }
 
-.car-sprite { z-index:5; left:6.4%; bottom:12%; width:38%; height:30%; object-fit:cover; object-position:center; transform:scaleX(-1); filter:drop-shadow(0 9px 0 rgba(32,29,49,.35)); animation:car-arrival 1.9s steps(8,end) both; }
+.car-sprite { z-index:5; left:5%; bottom:12%; width:42%; height:30%; object-fit:cover; object-position:center; transform:scaleX(-1); filter:drop-shadow(0 9px 0 rgba(32,29,49,.35)); animation:car-arrival 1.9s steps(8,end) both; }
 .scene[data-phase='departing'] .car-sprite { animation:car-departure 1.8s steps(8,end) both; }
 
 .driver { z-index:7; bottom:17%; left:27%; width:13%; height:41%; background-image:url('assets/sprites/driver-harajuku.png'); background-repeat:no-repeat; background-size:400% 100%; background-position:0 center; opacity:0; filter:drop-shadow(0 6px 0 rgba(32,29,49,.38)); }
-.driver[data-pose='drinking'] { left:39%; background-position:66.666% center; opacity:1; }
+.driver[data-pose='standing'] { left:39%; background-position:0 center; opacity:1; }
 .driver[data-pose='looking-at-sign'] { left:37%; background-position:100% center; opacity:1; }
-.drink-sprite { z-index:8; left:44%; bottom:31%; width:4.8%; opacity:0; transform:rotate(-7deg); }
-.scene[data-phase='conversation'] .drink-sprite,.scene[data-phase='farewell'] .drink-sprite { opacity:1; }
 
 .target { position:absolute; z-index:12; padding:0; border:0; background:transparent; cursor:default; }
 .target:not(:disabled) { cursor:pointer; }
 .target:focus-visible { outline:4px solid #ffde70; outline-offset:4px; }
-.target-car { left:7.5%; bottom:13%; width:37%; height:25%; clip-path:polygon(4% 76%,11% 48%,31% 40%,44% 11%,68% 11%,84% 43%,97% 50%,100% 76%,90% 85%,9% 85%); }
+.target-car { left:5.5%; bottom:13%; width:41%; height:25%; clip-path:polygon(4% 76%,11% 48%,31% 40%,44% 11%,68% 11%,84% 43%,97% 50%,100% 76%,90% 85%,9% 85%); }
 
 .cue,.dialog-message { position:absolute; z-index:20; margin:0; color:var(--cream); font:clamp(12px,1.45vw,19px)/1.45 system-ui,sans-serif; letter-spacing:.02em; text-shadow:3px 3px 0 var(--ink); }
 .cue { max-width:28%; }.cue::before { color:#ffde70; content:'✦ '; }
@@ -33,6 +31,7 @@ button { font:inherit; }
 .dialog-message[data-mode='answer']::after { display:none; }
 .dialog-copy { margin:0 0 12px; }
 .dialog-answer { display:grid; gap:10px; }
+.dialog-answer[hidden] { display:none; }
 .answer-entry { display:flex; gap:8px; }
 .dialog-answer-input { min-width:0; flex:1; padding:8px 10px; border:3px solid var(--ink); background:var(--cream); box-shadow:inset 3px 3px 0 rgba(32,29,49,.18); color:var(--ink); font:inherit; }
 .dialog-answer-input:focus-visible,.dialog-submit:focus-visible { outline:3px solid #ffde70; outline-offset:2px; }

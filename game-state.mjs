@@ -1,7 +1,7 @@
 const conversation = [
-  { text: 'วันนี้หนักมาใช่ไหม', requiresReply: true, pose: 'drinking' },
-  { text: 'ขอบคุณที่แวะมาคุยกันนะ', requiresReply: false, pose: 'drinking' },
-  { text: 'ถ้ายังไม่ไหวก็ไม่เป็นไร ลองหายใจลึก ๆ ก่อน', requiresReply: false, pose: 'drinking' },
+  { text: 'วันนี้หนักมาใช่ไหม', requiresReply: true, pose: 'standing' },
+  { text: 'ขอบคุณที่แวะมาคุยกันนะ', requiresReply: false, pose: 'standing' },
+  { text: 'ถ้ายังไม่ไหวก็ไม่เป็นไร ลองหายใจลึก ๆ ก่อน', requiresReply: false, pose: 'standing' },
   { text: 'ถ้าไหว ลองยิ้มมุมปากนิดเดียวก็พอ ไม่ต้องฝืน', requiresReply: true, pose: 'looking-at-sign' },
   { text: 'แค่นั้นก็เก่งมากแล้ว', requiresReply: false, pose: 'looking-at-sign' },
   { text: 'ยิ้มของคุณน่ารักจะตายไป', requiresReply: false, pose: 'looking-at-sign' },

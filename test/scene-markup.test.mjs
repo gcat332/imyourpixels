@@ -8,6 +8,7 @@ test('the game page contains one in-scene car interaction and a typed dialogue',
     assert.match(html, new RegExp(`id="${id}"`));
   }
   assert.match(html, /<div id="driver" class="driver"/);
+  assert.doesNotMatch(html, /drink-sprite/);
   assert.doesNotMatch(html, /data-answer=|id="answer-options"/);
   assert.doesNotMatch(html, /id="vending-button"|id="sign-button"/);
   assert.doesNotMatch(html, /mini-game|result-card|control-card|<footer/);

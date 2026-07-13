@@ -9,7 +9,7 @@ test('the shortened conversation only asks for replies at its check-in and smile
   state = transition(state, 'tap-car');
 
   assert.equal(state.phase, 'conversation');
-  assert.equal(state.driverPose, 'drinking');
+  assert.equal(state.driverPose, 'standing');
   assert.equal(state.dialogMode, 'answer');
   assert.equal(state.dialog, 'วันนี้หนักมาใช่ไหม');
 

@@ -22,7 +22,10 @@ test('the in-scene pixel dialogue supports typed replies and an isolated sprite 
   assert.match(css, /\.dialog-message\s*\{[^}]*background:/);
   assert.match(css, /\.dialog-answer-input\s*\{[^}]*background:/);
   assert.match(css, /\.driver\s*\{[^}]*background-size:400% 100%/);
-  assert.match(css, /\.driver\[data-pose='drinking'\]\s*\{[^}]*background-position:66\.666%/);
+  assert.match(css, /\.driver\[data-pose='standing'\]\s*\{[^}]*background-position:0 center/);
+  assert.match(css, /\.car-sprite\s*\{[^}]*width:42%/);
+  assert.doesNotMatch(css, /\.drink-sprite/);
   assert.match(css, /\.dialog-message::after\s*\{/);
+  assert.match(css, /\.dialog-answer\[hidden\]\s*\{\s*display:none;/);
   assert.doesNotMatch(css, /driver-walk-right|driver-return-left/);
 });
