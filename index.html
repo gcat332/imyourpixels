@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ff7a9f" />
+    <title>แวะมายิ้มก่อน — Pixel Mood Booster</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body data-phase="arriving">
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">SNACK STOP / 1996</p>
+          <h1>แวะมายิ้มก่อน</h1>
+        </div>
+        <button id="sound-toggle" class="icon-button" type="button" aria-label="เปิดหรือปิดเสียง" aria-pressed="false">♫ <span>เสียงปิด</span></button>
+      </header>
+
+      <p id="live-region" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+
+      <section id="scene" class="scene" aria-label="ร้านขนมริมถนนญี่ปุ่นยุค 90s">
+        <div class="sun"></div>
+        <div class="cloud cloud-one"></div>
+        <div class="cloud cloud-two"></div>
+        <div class="cityline cityline-back"></div>
+        <div class="cityline cityline-front"></div>
+        <div class="power-pole"><i></i><b></b><span></span></div>
+
+        <div id="shop" class="shop">
+          <div class="shop-roof"></div>
+          <div class="shop-sign"><span>おやつ</span><small>OYATSU</small></div>
+          <div class="shop-wall">
+            <div class="shop-window"><span>♡</span><span>🍮</span><span>☆</span></div>
+            <div class="shop-counter"><div class="mascot">ฅ^•ﻌ•^ฅ</div><span>SNACKS &amp; SMILES</span></div>
+            <div class="vending-machine"><i></i><i></i><i></i><b>DRINK</b></div>
+          </div>
+          <div class="shop-awning"><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+
+        <div class="road-sign">ゆっくり<br /><small>YUKKURI</small></div>
+        <div id="car" class="car" role="img" aria-label="รถ Nissan Skyline GT-R R32 สีฟ้าอมม่วง">
+          <div class="spoiler"></div><div class="car-roof"></div><div class="car-window window-front"></div><div class="car-window window-back"></div>
+          <div class="car-body"><span class="car-stripe"></span><span class="car-light"></span><span class="car-grille"></span></div>
+          <div class="wheel wheel-front"></div><div class="wheel wheel-back"></div>
+        </div>
+        <div class="car-shadow"></div>
+        <div class="road"><span></span><span></span><span></span></div>
+        <div class="grass"><i></i><i></i><i></i><i></i></div>
+        <div class="sparkles" aria-hidden="true"><span>✦</span><span>✧</span><span>✦</span></div>
+      </section>
+
+      <section class="control-card" aria-label="การควบคุมเกม">
+        <div class="status-copy">
+          <p class="status-kicker">รถกำลังมาถึง...</p>
+          <p id="status-text">อีกแป๊บเดียวก็ถึงร้านแล้วนะ</p>
+        </div>
+        <button id="main-action" class="pixel-button primary" type="button" disabled>รอรถแป๊บ...</button>
+      </section>
+
+      <section id="mini-game" class="mini-game" aria-labelledby="game-title" hidden>
+        <div class="game-heading"><span class="game-icon">🍬</span><div><p class="eyebrow">TINY RESET</p><h2 id="game-title">รับขนมก่อนค่อยไปต่อนะ</h2></div></div>
+        <p class="game-instruction">กดขนมให้ครบ 5 ชิ้น ไม่ต้องรีบเลย</p>
+        <div class="game-board"><button id="treat-button" class="treat-button" type="button" aria-label="กดเก็บขนม">🍬</button><span class="game-star">✦</span><span class="game-heart">♡</span></div>
+        <p class="treat-counter"><span id="treat-count">0</span> / 5 ขนม</p>
+      </section>
+
+      <section id="result-card" class="result-card" aria-live="polite" hidden>
+        <div class="result-stamp">GOOD<br />MOOD!</div>
+        <div><p class="eyebrow">MESSAGE FROM OYATSU</p><p id="message">ยิ้มได้แล้ว ค่อยไปต่อนะ</p></div>
+      </section>
+
+      <footer><span>♡ made for a softer moment</span><span>NO RUSH / NO PRESSURE</span></footer>
+    </main>
+  </body>
+</html>
