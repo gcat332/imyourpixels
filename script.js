@@ -1,132 +1,75 @@
-const state = {
-  phase: 'arriving',
-  treats: 0,
-  soundOn: false,
-};
-
-const phases = ['arriving', 'parked', 'playing', 'finished', 'departing'];
-const messages = [
-  'ยิ้มได้แล้ว ค่อยไปต่อนะ',
-  'พักนิดเดียวก็เก่งมากแล้ว',
-  'ขนมหมดแล้ว แต่อารมณ์ดีเหลืออยู่นะ',
-  'วันนี้ไม่ต้องโอเคทั้งหมดก็ได้',
-];
+import { createGameState, transition } from './game-state.mjs';
 
 const car = document.querySelector('#car');
-const mainAction = document.querySelector('#main-action');
-const miniGame = document.querySelector('#mini-game');
-const treatButton = document.querySelector('#treat-button');
-const treatCount = document.querySelector('#treat-count');
-const resultCard = document.querySelector('#result-card');
+const vendingMachine = document.querySelector('#vending-machine');
+const signButton = document.querySelector('#sign-button');
+const cue = document.querySelector('#cue');
 const message = document.querySelector('#message');
-const statusText = document.querySelector('#status-text');
-const statusKicker = document.querySelector('.status-kicker');
 const liveRegion = document.querySelector('#live-region');
 const soundToggle = document.querySelector('#sound-toggle');
 
+let state = createGameState();
 let arrivalFallback;
 
 function announce(text) {
   liveRegion.textContent = '';
-  window.setTimeout(() => { liveRegion.textContent = text; }, 20);
+  window.setTimeout(() => { liveRegion.textContent = text; }, 10);
 }
 
-function renderPhase() {
+function render() {
   document.body.dataset.phase = state.phase;
-  const copy = {
-    arriving: ['รถกำลังมาถึง...', 'อีกแป๊บเดียวก็ถึงร้านแล้วนะ', 'รอรถแป๊บ...'],
-    parked: ['รถจอดแล้ว', 'รับขนมสักชิ้นไหม ไม่ต้องรีบเลย', 'จอดพักแป๊บ'],
-    playing: ['โหมดพักใจ', 'ค่อยๆ กดรับขนมให้ครบ 5 ชิ้นนะ', 'กำลังเล่นอยู่...'],
-    finished: ['GOOD MOOD!', 'เรียบร้อยแล้ว ขอให้วันนี้เบาลงนิดนึงนะ', 'เล่นอีกครั้ง'],
-    departing: ['ไปต่อได้แล้ว', 'ขอบคุณที่แวะมาพักนะ', 'กำลังออกเดินทาง...'],
-  }[state.phase];
+  cue.textContent = state.prompt;
+  cue.hidden = !state.prompt;
 
-  statusKicker.textContent = copy[0];
-  statusText.textContent = copy[1];
-  mainAction.textContent = copy[2];
-  mainAction.disabled = state.phase === 'arriving' || state.phase === 'playing' || state.phase === 'departing';
-  announce(copy[1]);
+  car.disabled = state.phase !== 'parked';
+  vendingMachine.disabled = state.phase !== 'cooling';
+  signButton.disabled = state.phase !== 'settled' && state.phase !== 'finished';
+
+  message.hidden = state.phase !== 'finished';
+  message.textContent = state.message;
+
+  if (state.phase === 'parked') announce(state.prompt);
+  if (state.phase === 'cooling') announce('จอดรถเรียบร้อยแล้ว ' + state.prompt);
+  if (state.phase === 'settled') announce('เย็นลงนิดหนึ่งแล้ว ' + state.prompt);
+  if (state.phase === 'finished') announce(state.message);
 }
 
-function setPhase(nextPhase) {
-  if (!phases.includes(nextPhase)) return;
-  state.phase = nextPhase;
-  renderPhase();
+function dispatch(event) {
+  const next = transition(state, event);
+  if (next === state) return;
+  state = next;
+  render();
 }
 
 function resetScene() {
   window.clearTimeout(arrivalFallback);
-  car.classList.remove('is-reset');
+  state = transition(state, 'reset');
   car.style.animation = 'none';
   void car.offsetWidth;
   car.style.animation = '';
-  miniGame.hidden = true;
-  resultCard.hidden = true;
-  treatButton.disabled = false;
-  state.treats = 0;
-  treatCount.textContent = '0';
-  setPhase('arriving');
-}
-
-function arrive() {
-  if (state.phase !== 'arriving') return;
-  setPhase('parked');
-}
-
-function startGame() {
-  if (state.phase !== 'parked') {
-    if (state.phase === 'finished') resetScene();
-    return;
+  render();
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    arrivalFallback = window.setTimeout(() => dispatch('car-arrived'), 60);
   }
-  state.treats = 0;
-  treatCount.textContent = '0';
-  miniGame.hidden = false;
-  resultCard.hidden = true;
-  setPhase('playing');
-  treatButton.focus({ preventScroll: true });
-}
-
-function finishGame() {
-  const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-  message.textContent = randomMessage;
-  resultCard.hidden = false;
-  treatButton.disabled = true;
-  setPhase('finished');
-  setPhase('departing');
-  window.setTimeout(() => {
-    if (state.phase === 'departing') {
-      resultCard.hidden = false;
-      setPhase('finished');
-    }
-  }, 1550);
-}
-
-function collectTreat() {
-  if (state.phase !== 'playing' || state.treats >= 5) return;
-  state.treats += 1;
-  treatCount.textContent = String(state.treats);
-  treatButton.style.left = `${14 + (state.treats * 13) % 67}%`;
-  treatButton.style.top = `${18 + (state.treats * 17) % 52}%`;
-  announce(`รับขนมแล้ว ${state.treats} จาก 5 ชิ้น`);
-  if (state.treats === 5) finishGame();
-}
-
-function toggleSound() {
-  state.soundOn = !state.soundOn;
-  soundToggle.setAttribute('aria-pressed', String(state.soundOn));
-  soundToggle.querySelector('span').textContent = state.soundOn ? 'เสียงเปิด' : 'เสียงปิด';
-  announce(state.soundOn ? 'เปิดเสียงแล้ว แต่ตอนนี้ยังไม่มีเสียงประกอบ' : 'ปิดเสียงแล้ว');
 }
 
 car.addEventListener('animationend', (event) => {
-  if (event.animationName === 'arrive') arrive();
+  if (event.animationName === 'arrive' && state.phase === 'arriving') dispatch('car-arrived');
 });
-mainAction.addEventListener('click', startGame);
-treatButton.addEventListener('click', collectTreat);
-soundToggle.addEventListener('click', toggleSound);
+car.addEventListener('click', () => dispatch('tap-car'));
+vendingMachine.addEventListener('click', () => dispatch('tap-vending'));
+signButton.addEventListener('click', () => {
+  if (state.phase === 'finished') resetScene();
+  else dispatch('tap-sign');
+});
+soundToggle.addEventListener('click', () => {
+  const soundOn = soundToggle.getAttribute('aria-pressed') !== 'true';
+  soundToggle.setAttribute('aria-pressed', String(soundOn));
+  soundToggle.textContent = soundOn ? '♪' : '♫';
+  announce(soundOn ? 'เปิดเสียงแล้ว ตอนนี้ยังไม่มีเสียงประกอบ' : 'ปิดเสียงแล้ว');
+});
 
+render();
 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  arrivalFallback = window.setTimeout(arrive, 60);
+  arrivalFallback = window.setTimeout(() => dispatch('car-arrived'), 60);
 }
-
-renderPhase();
