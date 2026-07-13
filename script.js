@@ -13,13 +13,13 @@ const elements = {
   dialogCopy: document.querySelector('#dialog-copy'),
   answerForm: document.querySelector('#answer-form'),
   answerInput: document.querySelector('#answer-input'),
-  answerOptions: document.querySelector('#answer-options'),
   soundToggle: document.querySelector('#sound-toggle'),
   liveRegion: document.querySelector('#live-region'),
 };
 
 let state = createGameState();
 let reducedMotionTimer;
+let farewellTimer;
 const sound = new SoundEngine();
 
 function announce(text) {
@@ -34,7 +34,9 @@ function render() {
 
   if (state.cue) announce(state.cue);
   if (state.dialog) announce(state.dialog);
-  if (state.phase === 'check-in') window.setTimeout(() => elements.answerInput.focus(), 0);
+  if (state.phase === 'conversation') window.setTimeout(() => elements.answerInput.focus(), 0);
+  window.clearTimeout(farewellTimer);
+  if (state.phase === 'farewell') farewellTimer = window.setTimeout(() => dispatch('begin-departure'), 6000);
   scheduleReducedMotionCompletion();
 }
 
@@ -62,13 +64,6 @@ function playAndDispatch(event, response) {
 }
 
 elements.car.addEventListener('click', () => playAndDispatch('tap-car'));
-elements.answerOptions.addEventListener('click', (event) => {
-  const option = event.target.closest('[data-answer]');
-  if (!option) return;
-  elements.answerInput.value = option.dataset.answer;
-  elements.answerInput.focus();
-  void sound.play('choose-answer');
-});
 elements.answerForm.addEventListener('submit', (event) => {
   event.preventDefault();
   const response = elements.answerInput.value.trim();
@@ -90,7 +85,6 @@ elements.soundToggle.addEventListener('click', () => {
 
 elements.scene.addEventListener('animationend', (event) => {
   if (event.animationName === 'car-arrival' && state.phase === 'arriving') dispatch('car-arrived');
-  if (event.animationName === 'dialog-message-in' && state.phase === 'encouragement') dispatch('begin-departure');
   if (event.animationName === 'car-departure' && state.phase === 'departing') dispatch('departure-finished');
 });
 

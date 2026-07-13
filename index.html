@@ -13,21 +13,16 @@
       <img class="scene-background" src="assets/scenes/roadside-shop-1280.png" alt="" />
       <img class="car-sprite" src="assets/car-white.png" alt="รถ JDM สีขาว" />
       <button id="car-button" class="target target-car" type="button" disabled aria-label="แตะประตูรถเพื่อพัก"></button>
-      <img id="driver" class="driver" src="assets/sprites/driver-harajuku.png" alt="ผู้หญิงสไตล์ฮาราจูกุผมครึ่งแดงครึ่งดำ" />
+      <div id="driver" class="driver" role="img" aria-label="ผู้หญิงสไตล์ฮาราจูกุอยู่ในรถ"></div>
       <img class="drink-sprite" src="assets/sprites/vending-cold-drink.png" alt="" />
       <p id="cue" class="cue" role="status"></p>
       <section id="dialog-box" class="dialog-message" aria-live="polite" hidden>
         <p id="dialog-copy" class="dialog-copy"></p>
         <form id="answer-form" class="dialog-answer">
-          <div id="answer-options" class="answer-options" aria-label="ตัวเลือกตอบเร็ว">
-            <button type="button" class="answer-option" data-answer="เหนื่อยมาทั้งวัน">เหนื่อยมาทั้งวัน</button>
-            <button type="button" class="answer-option" data-answer="มีเรื่องให้หงุดหงิดนิดหน่อย">หงุดหงิดนิดหน่อย</button>
-            <button type="button" class="answer-option" data-answer="คิดมากไปหน่อย">คิดมากไปหน่อย</button>
-          </div>
-          <label class="sr-only" for="answer-input">วันนี้เกิดอะไรขึ้น</label>
+          <label class="sr-only" for="answer-input">พิมพ์ตอบกลับ</label>
           <div class="answer-entry">
-            <input id="answer-input" class="dialog-answer-input" type="text" maxlength="120" autocomplete="off" placeholder="เล่าให้เราฟังได้นะ" required />
-            <button class="dialog-submit" type="submit">บอกเรา</button>
+            <input id="answer-input" class="dialog-answer-input" type="text" maxlength="120" autocomplete="off" placeholder="พิมพ์ตอบกลับ..." required />
+            <button class="dialog-submit" type="submit">ตอบกลับ</button>
           </div>
         </form>
       </section>
