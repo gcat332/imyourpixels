@@ -40,5 +40,18 @@ body[data-phase="parked"] .status-kicker,body[data-phase="playing"] .status-kick
 
 /* The supplied sticker is the hero car; crop its square canvas into a side-view sprite. */
 .car { height:auto; min-height:0; aspect-ratio:3.35 / 1; filter:drop-shadow(0 8px 0 rgba(55,41,69,.18)); }
-.car-image { display:block; width:100%; height:100%; object-fit:cover; object-position:center; mix-blend-mode:multiply; image-rendering:auto; }
+.car-image { display:block; width:100%; height:100%; object-fit:cover; object-position:center; image-rendering:pixelated; }
 @media (max-width:650px){.car{width:55%;height:auto;}}
+
+/* All playable UI lives inside the single side-scrolling pixel scene. */
+.scene-ui { position:absolute; z-index:14; inset:0; pointer-events:none; }
+.scene-ui > * { pointer-events:auto; }
+.scene-hud { position:absolute; left:3%; top:5%; display:flex; align-items:flex-start; gap:15px; max-width:54%; color:var(--cream); text-shadow:3px 3px 0 var(--ink); }
+.scene-hud .status-kicker { color:var(--yellow); text-shadow:2px 2px 0 var(--ink); }
+.scene-hud .status-copy p:last-child { margin:0; font-size:clamp(13px,2vw,19px); line-height:1.35; }
+.scene-hud .icon-button { border:0; box-shadow:3px 3px 0 var(--ink); padding:7px 9px; background:var(--cream); color:var(--ink); text-shadow:none; font-size:11px; white-space:nowrap; }
+.scene-ui > .primary { position:absolute; left:3%; top:25%; }
+.scene-ui .mini-game { position:absolute; left:3%; bottom:4%; width:min(47%,430px); margin:0; padding:12px 14px 10px; color:var(--ink); background:rgba(255,240,189,.93); box-shadow:5px 5px 0 var(--ink); }
+.scene-ui .game-heading { gap:8px; }.scene-ui .game-icon { font-size:25px; }.scene-ui .mini-game h2 { font-size:clamp(13px,2vw,20px); }.scene-ui .mini-game .eyebrow { font-size:7px; }.scene-ui .game-instruction { margin:7px 0 4px; font-size:12px; }.scene-ui .game-board { height:74px; }.scene-ui .treat-button { padding:9px; font-size:20px; }.scene-ui .treat-counter { margin:5px 0 0; font-size:12px; }.scene-ui .treat-counter span { font-size:18px; }
+.scene-ui .result-card { position:absolute; left:3%; top:25%; display:flex; align-items:center; gap:12px; width:min(47%,430px); margin:0; padding:10px 12px; color:var(--ink); background:rgba(217,240,209,.95); box-shadow:5px 5px 0 var(--ink); }.scene-ui .result-stamp { flex-basis:58px; padding:8px 2px; font-size:7px; }.scene-ui .result-card #message { font-size:clamp(14px,2vw,19px); }.scene-ui .result-card .eyebrow { font-size:6px; }
+@media (max-width:650px){.scene-hud{left:4%;top:4%;max-width:90%;gap:8px}.scene-hud .status-copy p:last-child{font-size:13px}.scene-hud .icon-button{font-size:9px;padding:6px}.scene-ui > .primary{left:4%;top:22%;padding:10px 12px;font-size:12px}.scene-ui .mini-game{left:4%;bottom:4%;width:62%;padding:9px}.scene-ui .mini-game h2{font-size:12px}.scene-ui .game-instruction{font-size:10px}.scene-ui .game-board{height:58px}.scene-ui .result-card{left:4%;top:22%;width:65%;padding:8px}.scene-ui .result-card #message{font-size:14px}}

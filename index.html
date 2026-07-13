@@ -15,7 +15,6 @@
           <p class="eyebrow">SNACK STOP / 1996</p>
           <h1>แวะมายิ้มก่อน</h1>
         </div>
-        <button id="sound-toggle" class="icon-button" type="button" aria-label="เปิดหรือปิดเสียง" aria-pressed="false">♫ <span>เสียงปิด</span></button>
       </header>
 
       <p id="live-region" class="sr-only" aria-live="polite" aria-atomic="true"></p>
@@ -41,35 +40,36 @@
 
         <div class="road-sign">ゆっくり<br /><small>YUKKURI</small></div>
         <div id="car" class="car" role="img" aria-label="รถ JDM สีเขียวสไตล์ pixel sticker">
-          <img class="car-image" src="assets/images.jpeg" alt="" />
+          <img class="car-image" src="assets/car-white.png" alt="" />
         </div>
         <div class="car-shadow"></div>
         <div class="road"><span></span><span></span><span></span></div>
         <div class="grass"><i></i><i></i><i></i><i></i></div>
         <div class="sparkles" aria-hidden="true"><span>✦</span><span>✧</span><span>✦</span></div>
-      </section>
 
-      <section class="control-card" aria-label="การควบคุมเกม">
-        <div class="status-copy">
-          <p class="status-kicker">รถกำลังมาถึง...</p>
-          <p id="status-text">อีกแป๊บเดียวก็ถึงร้านแล้วนะ</p>
+        <div class="scene-ui" aria-label="การควบคุมเกมในฉาก">
+          <div class="scene-hud">
+            <div class="status-copy">
+              <p class="status-kicker">รถกำลังมาถึง...</p>
+              <p id="status-text">อีกแป๊บเดียวก็ถึงร้านแล้วนะ</p>
+            </div>
+            <button id="sound-toggle" class="icon-button" type="button" aria-label="เปิดหรือปิดเสียง" aria-pressed="false">♫ <span>เสียงปิด</span></button>
+          </div>
+          <button id="main-action" class="pixel-button primary" type="button" disabled>รอรถแป๊บ...</button>
+
+          <section id="mini-game" class="mini-game" aria-labelledby="game-title" hidden>
+            <div class="game-heading"><span class="game-icon">🍬</span><div><p class="eyebrow">TINY RESET</p><h2 id="game-title">รับขนมก่อนค่อยไปต่อนะ</h2></div></div>
+            <p class="game-instruction">กดขนมให้ครบ 5 ชิ้น ไม่ต้องรีบเลย</p>
+            <div class="game-board"><button id="treat-button" class="treat-button" type="button" aria-label="กดเก็บขนม">🍬</button><span class="game-star">✦</span><span class="game-heart">♡</span></div>
+            <p class="treat-counter"><span id="treat-count">0</span> / 5 ขนม</p>
+          </section>
+
+          <section id="result-card" class="result-card" aria-live="polite" hidden>
+            <div class="result-stamp">GOOD<br />MOOD!</div>
+            <div><p class="eyebrow">MESSAGE FROM OYATSU</p><p id="message">ยิ้มได้แล้ว ค่อยไปต่อนะ</p></div>
+          </section>
         </div>
-        <button id="main-action" class="pixel-button primary" type="button" disabled>รอรถแป๊บ...</button>
       </section>
-
-      <section id="mini-game" class="mini-game" aria-labelledby="game-title" hidden>
-        <div class="game-heading"><span class="game-icon">🍬</span><div><p class="eyebrow">TINY RESET</p><h2 id="game-title">รับขนมก่อนค่อยไปต่อนะ</h2></div></div>
-        <p class="game-instruction">กดขนมให้ครบ 5 ชิ้น ไม่ต้องรีบเลย</p>
-        <div class="game-board"><button id="treat-button" class="treat-button" type="button" aria-label="กดเก็บขนม">🍬</button><span class="game-star">✦</span><span class="game-heart">♡</span></div>
-        <p class="treat-counter"><span id="treat-count">0</span> / 5 ขนม</p>
-      </section>
-
-      <section id="result-card" class="result-card" aria-live="polite" hidden>
-        <div class="result-stamp">GOOD<br />MOOD!</div>
-        <div><p class="eyebrow">MESSAGE FROM OYATSU</p><p id="message">ยิ้มได้แล้ว ค่อยไปต่อนะ</p></div>
-      </section>
-
-      <footer><span>♡ made for a softer moment</span><span>NO RUSH / NO PRESSURE</span></footer>
     </main>
   </body>
 </html>
