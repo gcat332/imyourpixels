@@ -37,6 +37,8 @@ button { font:inherit; }
 .scene[data-phase='vending-ready'] .cue { left:39%; bottom:58%; }
 .scene[data-phase='sign-ready'] .cue { top:7%; left:58%; width:27%; text-align:center; }
 .neon-message { top:16.5%; left:59%; width:25%; color:#fff9e7; text-align:center; text-shadow:2px 2px 0 #4b265d,0 0 13px #ff9dc7; animation:neon-message-in 2.1s steps(6,end) both; }
+.sound-toggle { position:absolute; z-index:21; top:3%; right:3%; padding:6px 8px; border:0; background:var(--cream); box-shadow:3px 3px 0 var(--ink); color:var(--ink); font:9px/1 monospace; cursor:pointer; }
+.sound-toggle:focus-visible { outline:3px solid #ffde70; outline-offset:3px; }
 
 @keyframes car-arrival { from { transform:translateX(-145%) scaleX(-1); } to { transform:translateX(0) scaleX(-1); } }
 @keyframes car-departure { from { transform:translateX(0) scaleX(-1); } to { transform:translateX(160%) scaleX(-1); } }

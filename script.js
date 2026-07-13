@@ -2,6 +2,7 @@ import { createGameState, transition } from './game-state.mjs';
 import { renderScene } from './components/scene-renderer.mjs';
 import { renderDriver } from './components/driver-renderer.mjs';
 import { renderTargets } from './components/target-renderer.mjs';
+import { SoundEngine } from './components/sound-engine.mjs';
 
 const elements = {
   scene: document.querySelector('#scene'),
@@ -11,11 +12,13 @@ const elements = {
   driver: document.querySelector('#driver'),
   cue: document.querySelector('#cue'),
   neonMessage: document.querySelector('#neon-message'),
+  soundToggle: document.querySelector('#sound-toggle'),
   liveRegion: document.querySelector('#live-region'),
 };
 
 let state = createGameState();
 let reducedMotionTimer;
+const sound = new SoundEngine();
 
 function announce(text) {
   elements.liveRegion.textContent = '';
@@ -52,9 +55,20 @@ function scheduleReducedMotionCompletion() {
   if (completion) reducedMotionTimer = window.setTimeout(() => dispatch(completion), 80);
 }
 
-elements.car.addEventListener('click', () => dispatch('tap-car'));
-elements.vending.addEventListener('click', () => dispatch('tap-vending'));
-elements.sign.addEventListener('click', () => dispatch('tap-sign'));
+function playAndDispatch(event) {
+  void sound.play(event);
+  dispatch(event);
+}
+
+elements.car.addEventListener('click', () => playAndDispatch('tap-car'));
+elements.vending.addEventListener('click', () => playAndDispatch('tap-vending'));
+elements.sign.addEventListener('click', () => playAndDispatch('tap-sign'));
+elements.soundToggle.addEventListener('click', () => {
+  sound.muted = !sound.muted;
+  elements.soundToggle.setAttribute('aria-pressed', String(!sound.muted));
+  elements.soundToggle.textContent = sound.muted ? 'MUTE' : 'SFX';
+  announce(sound.muted ? 'ปิดเสียงเอฟเฟกต์แล้ว' : 'เปิดเสียงเอฟเฟกต์แล้ว');
+});
 
 elements.scene.addEventListener('animationend', (event) => {
   if (event.animationName === 'car-arrival' && state.phase === 'arriving') dispatch('car-arrived');
