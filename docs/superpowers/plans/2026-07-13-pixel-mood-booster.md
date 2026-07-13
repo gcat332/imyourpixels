@@ -196,5 +196,5 @@ git push
 ## Self-review
 
 - Spec coverage: goal and experience are covered by Tasks 1, 3, and 4; visual direction by Task 2; interaction state and accessibility by Tasks 1–4; static hosting and verification by Task 5.
-- Placeholder scan: no TBD, TODO, FIXME, or unspecified implementation step appears in this plan.
+- Completeness scan: every implementation step names its files, behavior, verification command, and expected outcome.
 - Type consistency: the phase names and state fields are defined in Task 3 and reused unchanged in Tasks 4–5.
