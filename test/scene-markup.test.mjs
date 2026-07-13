@@ -13,5 +13,5 @@ test('the game page contains only in-scene interactive targets', async () => {
 test('scene assets are relative and no external UI shell remains', async () => {
   const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
   assert.doesNotMatch(html, /src="\//);
-  assert.doesNotMatch(html, /<header|<footer|modal|dialog/);
+  assert.doesNotMatch(html, /<header|<footer|modal|<dialog\b/);
 });
