@@ -4,10 +4,10 @@ import { renderTargets } from '../components/target-renderer.mjs';
 
 test('target renderer enables only the active target', () => {
   const car = { disabled: true };
-  const vending = { disabled: true };
-  const sign = { disabled: true };
 
-  renderTargets('vending', { car, vending, sign });
+  renderTargets('car', { car });
+  assert.equal(car.disabled, false);
 
-  assert.deepEqual([car.disabled, vending.disabled, sign.disabled], [true, false, true]);
+  renderTargets(null, { car });
+  assert.equal(car.disabled, true);
 });

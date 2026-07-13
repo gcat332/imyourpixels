@@ -1,7 +1,7 @@
 const eventNotes = {
   'tap-car': [261.63, 329.63],
-  'tap-vending': [392, 523.25],
-  'tap-sign': [523.25, 659.25, 783.99],
+  'choose-answer': [392, 523.25],
+  'submit-answer': [523.25, 659.25, 783.99],
 };
 
 export function soundNotesForEvent(event) {

@@ -11,13 +11,16 @@ test('scene targets follow their art instead of drawing rectangular overlays', a
   assert.match(css, /\.driver\s*\{[^}]*bottom:17%/);
 });
 
-test('encouragement appears in an in-scene pixel dialogue box', async () => {
+test('the in-scene pixel dialogue supports text entry and quick choices', async () => {
   const [html, css] = await Promise.all([
     readFile(new URL('../index.html', import.meta.url), 'utf8'),
     readFile(new URL('../style.css', import.meta.url), 'utf8'),
   ]);
 
-  assert.match(html, /id="neon-message" class="dialog-message"/);
+  assert.match(html, /id="dialog-box" class="dialog-message"/);
+  assert.match(html, /id="answer-input"[^>]*type="text"/);
   assert.match(css, /\.dialog-message\s*\{[^}]*background:/);
+  assert.match(css, /\.dialog-answer-input\s*\{[^}]*background:/);
   assert.match(css, /\.dialog-message::after\s*\{/);
+  assert.doesNotMatch(css, /driver-walk-right|driver-return-left/);
 });

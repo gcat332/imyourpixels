@@ -4,14 +4,13 @@ const messages = [
   'ความน่ารักของเธอ ทำให้คืนนี้ดีขึ้นเยอะเลย',
 ];
 
+const checkInQuestion = 'วันนี้เจออะไรมาทำไมหน้าบึ้งละ';
+
 const phases = {
   arriving: { event: 'car-arrived', phase: 'parked', pose: 'in-car', target: 'car', cue: 'แตะประตูรถเพื่อพักก่อนนะ', palette: 'warm' },
-  parked: { event: 'tap-car', phase: 'walking-to-vending', pose: 'walking-right', target: null, cue: '', palette: 'warm' },
-  'walking-to-vending': { event: 'driver-reached-vending', phase: 'vending-ready', pose: 'at-vending', target: 'vending', cue: 'กดน้ำเย็นให้เธอหน่อย', palette: 'warm' },
-  'vending-ready': { event: 'tap-vending', phase: 'walking-back', pose: 'drinking', target: null, cue: '', palette: 'cool' },
-  'walking-back': { event: 'driver-returned', phase: 'sign-ready', pose: 'looking-at-sign', target: 'sign', cue: 'แตะป้ายไฟดูสิ', palette: 'cool' },
-  'sign-ready': { event: 'tap-sign', phase: 'message', pose: 'looking-at-sign', target: 'sign', cue: '', palette: 'cool' },
-  message: { event: 'begin-departure', phase: 'departing', pose: 'in-car', target: null, cue: '', palette: 'cool' },
+  parked: { event: 'tap-car', phase: 'check-in', pose: 'drinking', target: null, cue: '', dialog: checkInQuestion, dialogMode: 'answer', palette: 'warm' },
+  'check-in': { event: 'submit-answer', phase: 'encouragement', pose: 'looking-at-sign', target: null, cue: '', dialogMode: 'message', palette: 'cool' },
+  encouragement: { event: 'begin-departure', phase: 'departing', pose: 'in-car', target: null, cue: '', dialog: '', dialogMode: 'hidden', palette: 'cool' },
   departing: { event: 'departure-finished', phase: 'arriving', pose: 'in-car', target: null, cue: '', palette: 'warm' },
 };
 
@@ -21,14 +20,19 @@ export function createGameState(messageIndex = 0) {
     driverPose: 'in-car',
     activeTarget: null,
     cue: '',
-    message: '',
+    dialog: '',
+    dialogMode: 'hidden',
+    response: '',
     messageIndex,
     palette: 'warm',
   };
 }
 
-export function transition(state, event) {
+export function transition(state, event, response = '') {
   if (event === 'restart') return createGameState(state.messageIndex);
+
+  const cleanedResponse = response.trim();
+  if (event === 'submit-answer' && !cleanedResponse) return state;
 
   const rule = phases[state.phase];
   if (!rule || rule.event !== event) return state;
@@ -39,11 +43,14 @@ export function transition(state, event) {
     driverPose: rule.pose,
     activeTarget: rule.target,
     cue: rule.cue,
+    dialog: rule.dialog ?? state.dialog,
+    dialogMode: rule.dialogMode ?? state.dialogMode,
     palette: rule.palette,
   };
 
-  if (event === 'tap-sign') {
-    next.message = messages[state.messageIndex % messages.length];
+  if (event === 'submit-answer') {
+    next.response = cleanedResponse;
+    next.dialog = messages[state.messageIndex % messages.length];
     next.messageIndex += 1;
   }
 

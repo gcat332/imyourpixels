@@ -14,11 +14,23 @@
       <img class="car-sprite" src="assets/car-white.png" alt="รถ JDM สีขาว" />
       <button id="car-button" class="target target-car" type="button" disabled aria-label="แตะประตูรถเพื่อพัก"></button>
       <img id="driver" class="driver" src="assets/sprites/driver-harajuku.png" alt="ผู้หญิงสไตล์ฮาราจูกุผมครึ่งแดงครึ่งดำ" />
-      <button id="vending-button" class="target target-vending" type="button" disabled aria-label="กดตู้เพื่อรับน้ำเย็น"></button>
       <img class="drink-sprite" src="assets/sprites/vending-cold-drink.png" alt="" />
-      <button id="sign-button" class="target target-sign" type="button" disabled aria-label="ดูข้อความบนป้ายไฟ"></button>
       <p id="cue" class="cue" role="status"></p>
-      <p id="neon-message" class="dialog-message" hidden></p>
+      <section id="dialog-box" class="dialog-message" aria-live="polite" hidden>
+        <p id="dialog-copy" class="dialog-copy"></p>
+        <form id="answer-form" class="dialog-answer">
+          <div id="answer-options" class="answer-options" aria-label="ตัวเลือกตอบเร็ว">
+            <button type="button" class="answer-option" data-answer="เหนื่อยมาทั้งวัน">เหนื่อยมาทั้งวัน</button>
+            <button type="button" class="answer-option" data-answer="มีเรื่องให้หงุดหงิดนิดหน่อย">หงุดหงิดนิดหน่อย</button>
+            <button type="button" class="answer-option" data-answer="คิดมากไปหน่อย">คิดมากไปหน่อย</button>
+          </div>
+          <label class="sr-only" for="answer-input">วันนี้เกิดอะไรขึ้น</label>
+          <div class="answer-entry">
+            <input id="answer-input" class="dialog-answer-input" type="text" maxlength="120" autocomplete="off" placeholder="เล่าให้เราฟังได้นะ" required />
+            <button class="dialog-submit" type="submit">บอกเรา</button>
+          </div>
+        </form>
+      </section>
       <button id="sound-toggle" class="sound-toggle" type="button" aria-label="เปิดหรือปิดเสียงเอฟเฟกต์" aria-pressed="true">SFX</button>
       <p id="live-region" class="sr-only" aria-live="polite" aria-atomic="true"></p>
     </main>

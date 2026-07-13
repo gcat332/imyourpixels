@@ -7,11 +7,13 @@ import { SoundEngine } from './components/sound-engine.mjs';
 const elements = {
   scene: document.querySelector('#scene'),
   car: document.querySelector('#car-button'),
-  vending: document.querySelector('#vending-button'),
-  sign: document.querySelector('#sign-button'),
   driver: document.querySelector('#driver'),
   cue: document.querySelector('#cue'),
-  neonMessage: document.querySelector('#neon-message'),
+  dialogBox: document.querySelector('#dialog-box'),
+  dialogCopy: document.querySelector('#dialog-copy'),
+  answerForm: document.querySelector('#answer-form'),
+  answerInput: document.querySelector('#answer-input'),
+  answerOptions: document.querySelector('#answer-options'),
   soundToggle: document.querySelector('#sound-toggle'),
   liveRegion: document.querySelector('#live-region'),
 };
@@ -31,12 +33,13 @@ function render() {
   renderTargets(state.activeTarget, elements);
 
   if (state.cue) announce(state.cue);
-  if (state.message) announce(state.message);
+  if (state.dialog) announce(state.dialog);
+  if (state.phase === 'check-in') window.setTimeout(() => elements.answerInput.focus(), 0);
   scheduleReducedMotionCompletion();
 }
 
-function dispatch(event) {
-  const next = transition(state, event);
+function dispatch(event, response) {
+  const next = transition(state, event, response);
   if (next === state) return;
   state = next;
   render();
@@ -47,22 +50,37 @@ function scheduleReducedMotionCompletion() {
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const completion = {
-    'walking-to-vending': 'driver-reached-vending',
-    'walking-back': 'driver-returned',
     departing: 'departure-finished',
   }[state.phase];
 
   if (completion) reducedMotionTimer = window.setTimeout(() => dispatch(completion), 80);
 }
 
-function playAndDispatch(event) {
+function playAndDispatch(event, response) {
   void sound.play(event);
-  dispatch(event);
+  dispatch(event, response);
 }
 
 elements.car.addEventListener('click', () => playAndDispatch('tap-car'));
-elements.vending.addEventListener('click', () => playAndDispatch('tap-vending'));
-elements.sign.addEventListener('click', () => playAndDispatch('tap-sign'));
+elements.answerOptions.addEventListener('click', (event) => {
+  const option = event.target.closest('[data-answer]');
+  if (!option) return;
+  elements.answerInput.value = option.dataset.answer;
+  elements.answerInput.focus();
+  void sound.play('choose-answer');
+});
+elements.answerForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const response = elements.answerInput.value.trim();
+  if (!response) {
+    elements.answerInput.setCustomValidity('เล่าได้แค่นิดเดียวก็พอนะ');
+    elements.answerInput.reportValidity();
+    return;
+  }
+  elements.answerInput.setCustomValidity('');
+  playAndDispatch('submit-answer', response);
+});
+elements.answerInput.addEventListener('input', () => elements.answerInput.setCustomValidity(''));
 elements.soundToggle.addEventListener('click', () => {
   sound.muted = !sound.muted;
   elements.soundToggle.setAttribute('aria-pressed', String(!sound.muted));
@@ -72,9 +90,7 @@ elements.soundToggle.addEventListener('click', () => {
 
 elements.scene.addEventListener('animationend', (event) => {
   if (event.animationName === 'car-arrival' && state.phase === 'arriving') dispatch('car-arrived');
-  if (event.animationName === 'driver-walk-right' && state.phase === 'walking-to-vending') dispatch('driver-reached-vending');
-  if (event.animationName === 'driver-return-left' && state.phase === 'walking-back') dispatch('driver-returned');
-  if (event.animationName === 'neon-message-in' && state.phase === 'message') dispatch('begin-departure');
+  if (event.animationName === 'dialog-message-in' && state.phase === 'encouragement') dispatch('begin-departure');
   if (event.animationName === 'car-departure' && state.phase === 'departing') dispatch('departure-finished');
 });
 

@@ -15,37 +15,40 @@ button { font:inherit; }
 .scene[data-phase='departing'] .car-sprite { animation:car-departure 1.8s steps(8,end) both; }
 
 .driver { z-index:7; bottom:17%; left:27%; width:13%; height:41%; object-fit:cover; object-position:12% center; opacity:0; filter:drop-shadow(0 6px 0 rgba(32,29,49,.38)); }
-.driver[data-pose='walking-right'] { object-position:42% center; opacity:1; }
-.scene[data-phase='walking-to-vending'] .driver { animation:driver-walk-right 1.25s steps(7,end) both; }
-.driver[data-pose='at-vending'],.driver[data-pose='drinking'] { left:48%; object-position:69% center; opacity:1; }
-.scene[data-phase='walking-back'] .driver { animation:driver-return-left 1.45s steps(7,end) both; }
+.driver[data-pose='drinking'] { left:39%; object-position:69% center; opacity:1; }
 .driver[data-pose='looking-at-sign'] { left:37%; object-position:90% center; opacity:1; }
-.drink-sprite { z-index:8; left:54%; bottom:36%; width:8%; opacity:0; transform:rotate(-7deg); }
-.scene[data-phase='walking-back'] .drink-sprite { opacity:1; }
+.drink-sprite { z-index:8; left:44%; bottom:31%; width:4.8%; opacity:0; transform:rotate(-7deg); }
+.scene[data-phase='check-in'] .drink-sprite,.scene[data-phase='encouragement'] .drink-sprite { opacity:1; }
 
 .target { position:absolute; z-index:12; padding:0; border:0; background:transparent; cursor:default; }
 .target:not(:disabled) { cursor:pointer; }
 .target:focus-visible { outline:4px solid #ffde70; outline-offset:4px; }
 .target-car { left:7.5%; bottom:13%; width:37%; height:25%; clip-path:polygon(4% 76%,11% 48%,31% 40%,44% 11%,68% 11%,84% 43%,97% 50%,100% 76%,90% 85%,9% 85%); }
-.target-vending { left:42.7%; bottom:24%; width:7.3%; height:31%; clip-path:polygon(8% 0,92% 0,100% 6%,100% 100%,0 100%,0 6%); }
-.target-sign { top:15.5%; left:58%; width:27%; height:13%; clip-path:polygon(4% 0,96% 0,100% 12%,100% 88%,96% 100%,4% 100%,0 88%,0 12%); }
 
 .cue,.dialog-message { position:absolute; z-index:20; margin:0; color:var(--cream); font:clamp(12px,1.45vw,19px)/1.45 system-ui,sans-serif; letter-spacing:.02em; text-shadow:3px 3px 0 var(--ink); }
 .cue { max-width:28%; }.cue::before { color:#ffde70; content:'✦ '; }
 .scene[data-phase='parked'] .cue { left:12%; bottom:50%; }
-.scene[data-phase='vending-ready'] .cue { left:39%; bottom:58%; }
-.scene[data-phase='sign-ready'] .cue { top:7%; left:58%; width:27%; text-align:center; }
-.dialog-message { z-index:22; left:8%; bottom:7%; width:84%; min-height:17%; padding:clamp(12px,2vw,24px) clamp(36px,4vw,58px) clamp(12px,2vw,24px) clamp(16px,2.4vw,30px); border:4px solid var(--cream); outline:4px solid var(--ink); outline-offset:-8px; background:#302d52; box-shadow:8px 8px 0 rgba(32,29,49,.72); color:#fff9e7; font-weight:700; text-shadow:2px 2px 0 #4b265d; animation:neon-message-in 2.1s steps(6,end) both; }
+.dialog-message { z-index:22; left:8%; bottom:7%; width:84%; min-height:17%; padding:clamp(12px,2vw,24px) clamp(36px,4vw,58px) clamp(12px,2vw,24px) clamp(16px,2.4vw,30px); border:4px solid var(--cream); outline:4px solid var(--ink); outline-offset:-8px; background:#302d52; box-shadow:8px 8px 0 rgba(32,29,49,.72); color:#fff9e7; font-weight:700; text-shadow:2px 2px 0 #4b265d; animation:dialog-message-in 2.1s steps(6,end) both; }
 .dialog-message::after { position:absolute; right:16px; bottom:13px; content:'▶'; color:#ffde70; font-size:.75em; text-shadow:2px 2px 0 var(--ink); animation:dialog-prompt .8s steps(2,end) infinite; }
+.dialog-message[data-mode='answer']::after { display:none; }
+.dialog-copy { margin:0 0 12px; }
+.dialog-answer { display:grid; gap:10px; }
+.answer-options { display:flex; flex-wrap:wrap; gap:8px; }
+.answer-option,.dialog-submit { border:3px solid var(--ink); background:#ffb0cc; box-shadow:3px 3px 0 var(--ink); color:var(--ink); font-weight:700; cursor:pointer; }
+.answer-option { padding:5px 8px; }
+.answer-option:hover,.answer-option:focus-visible { background:#ffde70; }
+.answer-entry { display:flex; gap:8px; }
+.dialog-answer-input { min-width:0; flex:1; padding:8px 10px; border:3px solid var(--ink); background:var(--cream); box-shadow:inset 3px 3px 0 rgba(32,29,49,.18); color:var(--ink); font:inherit; }
+.dialog-answer-input:focus-visible,.answer-option:focus-visible,.dialog-submit:focus-visible { outline:3px solid #ffde70; outline-offset:2px; }
+.dialog-submit { flex:0 0 auto; padding:8px 12px; background:#8ee0b4; }
+.dialog-submit:hover { background:#ffde70; }
 .sound-toggle { position:absolute; z-index:21; top:3%; right:3%; padding:6px 8px; border:0; background:var(--cream); box-shadow:3px 3px 0 var(--ink); color:var(--ink); font:9px/1 monospace; cursor:pointer; }
 .sound-toggle:focus-visible { outline:3px solid #ffde70; outline-offset:3px; }
 
 @keyframes car-arrival { from { transform:translateX(-145%) scaleX(-1); } to { transform:translateX(0) scaleX(-1); } }
 @keyframes car-departure { from { transform:translateX(0) scaleX(-1); } to { transform:translateX(160%) scaleX(-1); } }
-@keyframes driver-walk-right { from { left:27%; } to { left:48%; } }
-@keyframes driver-return-left { from { left:48%; object-position:69% center; } to { left:37%; object-position:90% center; } }
 @keyframes dialog-prompt { 50% { opacity:.25; } }
-@keyframes neon-message-in { 0% { opacity:0; transform:translateY(-8px); } 20%,78% { opacity:1; transform:translateY(0); } 100% { opacity:1; transform:translateY(0); } }
+@keyframes dialog-message-in { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
 
-@media (max-width:680px) { body { align-items:start; } .scene { width:100vw; min-height:0; margin-top:max(0px,calc((100vh - 56.25vw)/2)); } .cue { max-width:42%; font-size:11px; } .scene[data-phase='parked'] .cue { left:9%; bottom:49%; } .scene[data-phase='vending-ready'] .cue { left:34%; bottom:57%; } .dialog-message { left:5%; bottom:5%; width:90%; min-height:22%; padding:11px 30px 11px 14px; border-width:3px; outline-width:3px; outline-offset:-6px; font-size:11px; } }
+@media (max-width:680px) { body { align-items:start; } .scene { width:100vw; min-height:0; margin-top:max(0px,calc((100vh - 56.25vw)/2)); } .cue { max-width:42%; font-size:11px; } .scene[data-phase='parked'] .cue { left:9%; bottom:49%; } .dialog-message { left:5%; bottom:5%; width:90%; min-height:22%; padding:11px 30px 11px 14px; border-width:3px; outline-width:3px; outline-offset:-6px; font-size:11px; } .answer-options { gap:5px; } .answer-option { padding:4px 6px; font-size:10px; } .answer-entry { gap:5px; } .dialog-answer-input,.dialog-submit { padding:7px; } }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; } }
