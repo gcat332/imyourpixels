@@ -11,7 +11,8 @@ const phases = {
   'vending-ready': { event: 'tap-vending', phase: 'walking-back', pose: 'drinking', target: null, cue: '', palette: 'cool' },
   'walking-back': { event: 'driver-returned', phase: 'sign-ready', pose: 'looking-at-sign', target: 'sign', cue: 'แตะป้ายไฟดูสิ', palette: 'cool' },
   'sign-ready': { event: 'tap-sign', phase: 'message', pose: 'looking-at-sign', target: 'sign', cue: '', palette: 'cool' },
-  message: { event: 'departure-finished', phase: 'arriving', pose: 'in-car', target: null, cue: '', palette: 'warm' },
+  message: { event: 'begin-departure', phase: 'departing', pose: 'in-car', target: null, cue: '', palette: 'cool' },
+  departing: { event: 'departure-finished', phase: 'arriving', pose: 'in-car', target: null, cue: '', palette: 'warm' },
 };
 
 export function createGameState(messageIndex = 0) {

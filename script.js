@@ -1,37 +1,35 @@
 import { createGameState, transition } from './game-state.mjs';
+import { renderScene } from './components/scene-renderer.mjs';
+import { renderDriver } from './components/driver-renderer.mjs';
+import { renderTargets } from './components/target-renderer.mjs';
 
-const car = document.querySelector('#car');
-const vendingMachine = document.querySelector('#vending-machine');
-const signButton = document.querySelector('#sign-button');
-const cue = document.querySelector('#cue');
-const message = document.querySelector('#message');
-const liveRegion = document.querySelector('#live-region');
-const soundToggle = document.querySelector('#sound-toggle');
+const elements = {
+  scene: document.querySelector('#scene'),
+  car: document.querySelector('#car-button'),
+  vending: document.querySelector('#vending-button'),
+  sign: document.querySelector('#sign-button'),
+  driver: document.querySelector('#driver'),
+  cue: document.querySelector('#cue'),
+  neonMessage: document.querySelector('#neon-message'),
+  liveRegion: document.querySelector('#live-region'),
+};
 
 let state = createGameState();
-let arrivalFallback;
+let reducedMotionTimer;
 
 function announce(text) {
-  liveRegion.textContent = '';
-  window.setTimeout(() => { liveRegion.textContent = text; }, 10);
+  elements.liveRegion.textContent = '';
+  window.setTimeout(() => { elements.liveRegion.textContent = text; }, 20);
 }
 
 function render() {
-  document.body.dataset.phase = state.phase;
-  cue.textContent = state.prompt;
-  cue.hidden = !state.prompt;
+  renderScene(state, elements);
+  renderDriver(state.driverPose, elements.driver);
+  renderTargets(state.activeTarget, elements);
 
-  car.disabled = state.phase !== 'parked';
-  vendingMachine.disabled = state.phase !== 'cooling';
-  signButton.disabled = state.phase !== 'settled' && state.phase !== 'finished';
-
-  message.hidden = state.phase !== 'finished';
-  message.textContent = state.message;
-
-  if (state.phase === 'parked') announce(state.prompt);
-  if (state.phase === 'cooling') announce('จอดรถเรียบร้อยแล้ว ' + state.prompt);
-  if (state.phase === 'settled') announce('เย็นลงนิดหนึ่งแล้ว ' + state.prompt);
-  if (state.phase === 'finished') announce(state.message);
+  if (state.cue) announce(state.cue);
+  if (state.message) announce(state.message);
+  scheduleReducedMotionCompletion();
 }
 
 function dispatch(event) {
@@ -41,35 +39,29 @@ function dispatch(event) {
   render();
 }
 
-function resetScene() {
-  window.clearTimeout(arrivalFallback);
-  state = transition(state, 'reset');
-  car.style.animation = 'none';
-  void car.offsetWidth;
-  car.style.animation = '';
-  render();
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    arrivalFallback = window.setTimeout(() => dispatch('car-arrived'), 60);
-  }
+function scheduleReducedMotionCompletion() {
+  window.clearTimeout(reducedMotionTimer);
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const completion = {
+    'walking-to-vending': 'driver-reached-vending',
+    'walking-back': 'driver-returned',
+    departing: 'departure-finished',
+  }[state.phase];
+
+  if (completion) reducedMotionTimer = window.setTimeout(() => dispatch(completion), 80);
 }
 
-car.addEventListener('animationend', (event) => {
-  if (event.animationName === 'arrive' && state.phase === 'arriving') dispatch('car-arrived');
-});
-car.addEventListener('click', () => dispatch('tap-car'));
-vendingMachine.addEventListener('click', () => dispatch('tap-vending'));
-signButton.addEventListener('click', () => {
-  if (state.phase === 'finished') resetScene();
-  else dispatch('tap-sign');
-});
-soundToggle.addEventListener('click', () => {
-  const soundOn = soundToggle.getAttribute('aria-pressed') !== 'true';
-  soundToggle.setAttribute('aria-pressed', String(soundOn));
-  soundToggle.textContent = soundOn ? '♪' : '♫';
-  announce(soundOn ? 'เปิดเสียงแล้ว ตอนนี้ยังไม่มีเสียงประกอบ' : 'ปิดเสียงแล้ว');
+elements.car.addEventListener('click', () => dispatch('tap-car'));
+elements.vending.addEventListener('click', () => dispatch('tap-vending'));
+elements.sign.addEventListener('click', () => dispatch('tap-sign'));
+
+elements.scene.addEventListener('animationend', (event) => {
+  if (event.animationName === 'car-arrival' && state.phase === 'arriving') dispatch('car-arrived');
+  if (event.animationName === 'driver-walk-right' && state.phase === 'walking-to-vending') dispatch('driver-reached-vending');
+  if (event.animationName === 'driver-return-left' && state.phase === 'walking-back') dispatch('driver-returned');
+  if (event.animationName === 'neon-message-in' && state.phase === 'message') dispatch('begin-departure');
+  if (event.animationName === 'car-departure' && state.phase === 'departing') dispatch('departure-finished');
 });
 
 render();
-if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  arrivalFallback = window.setTimeout(() => dispatch('car-arrived'), 60);
-}

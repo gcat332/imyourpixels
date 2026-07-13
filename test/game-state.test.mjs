@@ -20,3 +20,17 @@ test('an unrelated tap cannot skip the calming path', () => {
   const state = transition(createGameState(), 'tap-sign');
   assert.equal(state.phase, 'arriving');
 });
+
+test('the car departs only after the neon message finishes', () => {
+  let state = createGameState();
+  for (const event of ['car-arrived', 'tap-car', 'driver-reached-vending', 'tap-vending', 'driver-returned', 'tap-sign']) {
+    state = transition(state, event);
+  }
+
+  state = transition(state, 'begin-departure');
+  assert.equal(state.phase, 'departing');
+  assert.equal(state.driverPose, 'in-car');
+
+  state = transition(state, 'departure-finished');
+  assert.equal(state.phase, 'arriving');
+});
