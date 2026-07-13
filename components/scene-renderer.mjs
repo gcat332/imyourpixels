@@ -6,6 +6,6 @@ export function renderScene(state, elements) {
   elements.dialogBox.hidden = !state.dialog;
   elements.dialogBox.dataset.mode = state.dialogMode;
   elements.dialogCopy.textContent = state.dialog;
-  elements.answerForm.hidden = state.dialogMode !== 'answer';
-  if (state.dialogMode === 'answer') elements.answerInput.value = '';
+  elements.answerForm.hidden = !state.requiresReply;
+  if (state.requiresReply) elements.answerInput.value = '';
 }

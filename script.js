@@ -19,7 +19,7 @@ const elements = {
 
 let state = createGameState();
 let reducedMotionTimer;
-let farewellTimer;
+let dialogTimer;
 const sound = new SoundEngine();
 
 function announce(text) {
@@ -34,9 +34,12 @@ function render() {
 
   if (state.cue) announce(state.cue);
   if (state.dialog) announce(state.dialog);
-  if (state.phase === 'conversation') window.setTimeout(() => elements.answerInput.focus(), 0);
-  window.clearTimeout(farewellTimer);
-  if (state.phase === 'farewell') farewellTimer = window.setTimeout(() => dispatch('begin-departure'), 6000);
+  if (state.phase === 'conversation' && state.requiresReply) window.setTimeout(() => elements.answerInput.focus(), 0);
+  window.clearTimeout(dialogTimer);
+  if (state.phase === 'conversation' && !state.requiresReply) {
+    dialogTimer = window.setTimeout(() => dispatch('advance-conversation'), 2800);
+  }
+  if (state.phase === 'farewell') dialogTimer = window.setTimeout(() => dispatch('begin-departure'), 5200);
   scheduleReducedMotionCompletion();
 }
 
