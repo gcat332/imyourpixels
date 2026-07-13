@@ -3,48 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#18152b" />
-    <title>แวะมายิ้มก่อน — Pixel Mood Booster</title>
+    <meta name="theme-color" content="#312a4a" />
+    <title>แวะมายิ้มก่อน</title>
     <link rel="stylesheet" href="style.css" />
     <script type="module" src="script.js"></script>
   </head>
-  <body data-phase="arriving">
-    <main class="game-shell">
-      <h1 class="sr-only">แวะมายิ้มก่อน เกมพักใจแบบพิกเซล</h1>
+  <body>
+    <main id="scene" class="scene" aria-label="ร้านขนม pixel art ริมถนน">
+      <img class="scene-background" src="assets/scenes/roadside-shop-1280.png" alt="" />
+      <img class="car-sprite" src="assets/car-white.png" alt="รถ JDM สีขาว" />
+      <button id="car-button" class="target target-car" type="button" disabled aria-label="แตะประตูรถเพื่อพัก"></button>
+      <img id="driver" class="driver" src="assets/sprites/driver-harajuku.png" alt="ผู้หญิงสไตล์ฮาราจูกุผมครึ่งแดงครึ่งดำ" />
+      <button id="vending-button" class="target target-vending" type="button" disabled aria-label="กดตู้เพื่อรับน้ำเย็น"></button>
+      <img class="drink-sprite" src="assets/sprites/vending-cold-drink.png" alt="" />
+      <button id="sign-button" class="target target-sign" type="button" disabled aria-label="ดูข้อความบนป้ายไฟ"></button>
+      <p id="cue" class="cue" role="status"></p>
+      <p id="neon-message" class="neon-message" hidden></p>
       <p id="live-region" class="sr-only" aria-live="polite" aria-atomic="true"></p>
-
-      <section id="scene" class="scene" aria-label="ร้านขนมริมถนนญี่ปุ่นยุค 90s">
-        <div class="sun" aria-hidden="true"></div>
-        <div class="cloud cloud-one" aria-hidden="true"></div>
-        <div class="cloud cloud-two" aria-hidden="true"></div>
-        <div class="heat-haze" aria-hidden="true"><i></i><i></i><i></i></div>
-        <div class="cityline cityline-back" aria-hidden="true"></div>
-        <div class="cityline cityline-front" aria-hidden="true"></div>
-        <div class="power-pole" aria-hidden="true"><i></i><b></b><span></span></div>
-
-        <div id="shop" class="shop">
-          <div class="shop-roof"></div>
-          <button id="sign-button" class="shop-sign" type="button" disabled aria-label="รับข้อความจากป้ายร้าน"><span>おやつ</span><small>OYATSU</small></button>
-          <div class="shop-wall">
-            <div class="shop-window"><span>♡</span><span>☆</span><span>♡</span></div>
-            <div class="shop-counter"><div class="mascot">ฅ^•ﻌ•^ฅ</div><span></span></div>
-            <button id="vending-machine" class="vending-machine" type="button" disabled aria-label="รับน้ำเย็นจากตู้กด"><i></i><i></i><i></i><b>DRINK</b></button>
-          </div>
-          <div class="shop-awning"><span></span><span></span><span></span><span></span><span></span></div>
-        </div>
-
-        <button id="car" class="car" type="button" disabled aria-label="แตะรถเพื่อจอดพัก">
-          <img class="car-image" src="assets/car-white.png" alt="รถ JDM สีขาวแบบ pixel art" />
-        </button>
-        <div class="car-shadow" aria-hidden="true"></div>
-        <div class="road"><span></span><span></span><span></span></div>
-        <div class="grass" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-        <div class="sparkles" aria-hidden="true"><span>✦</span><span>✧</span><span>✦</span></div>
-
-        <p id="cue" class="cue" role="status"></p>
-        <p id="message" class="shop-message" hidden></p>
-        <button id="sound-toggle" class="sound-toggle" type="button" aria-label="เปิดหรือปิดเสียง" aria-pressed="false">♫</button>
-      </section>
     </main>
   </body>
 </html>
