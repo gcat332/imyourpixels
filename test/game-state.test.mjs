@@ -36,7 +36,7 @@ test('the dialogue accepts the no-answer branches and closes after the smile que
   }
 
   assert.equal(state.phase, 'farewell');
-  assert.equal(state.dialog, 'ยิ้มของเธอน่ารักจะตายไป');
+  assert.equal(state.dialog, 'ยิ้มของเธอน่ารักจะตายไป\nอยากให้ยิ้มเยอะ ๆ นะ');
   assert.equal(state.answers.smile, 'ไม่บอก');
 });
 
